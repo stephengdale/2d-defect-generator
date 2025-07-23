@@ -383,6 +383,28 @@ class generate_defect:
             dt_plot = f"${dt.split(dt_plot_split)[0]}{dist_group}{dt.split(dt_plot_split)[1]}$"
             return defect_info, dt_plot
 
+        elif True:
+            replacement, to_be_replaced, angle, dist_group = [], [], [], []
+            for count, ii in enumerate(dt.split("!")):
+                re, to_be = np.array(ii.split("_"))[0:2]
+                replacement.append(re)
+                to_be_replaced.append(to_be)
+                if count != len(dt.split("!")) - 1:
+                    dist_group.append(int(ii.split("_")[2]))
+                    angle.append(float(ii.split("_")[3]))
+
+            defect_info = np.zeros(len(dt.split("!")), dtype=defect_info_dtype)
+
+            ind_seed = self._getIndexCentremostAtom(atom_type=to_be_replaced[0])
+            indices = [ind_seed]
+            for ii in range(1, len(dt.split("!"))):
+                indices.append(self._getIndexNeighbour(indices[-1], dist_group=dist_group[ii-1], num_atoms=1, p_angle=angle[ii-1])[0])
+
+            defect_info["indx"] = indices
+            defect_info["atom"] = replacement
+            dt_plot = "test"
+            return defect_info, dt_plot
+
         elif dt in ["C_BC_N_3", "C_NC_B_3"]:
             replacement = "C"
             to_be_replaced = dt.split("C_")[1]
@@ -666,8 +688,7 @@ ext = ".in"
 dims = [4]
 defs = ["pure", "C_B", "C_N", "V_B", "V_N", "C_2", "C_BV_N", "C_NO_N", "C_2C_B", "C_2C_N", "C_B(C_N)_3", "C_N(C_B)_3", "(C_4)_t", "(C_4)_c", "C_6"]
 # defs = ["pure", "C_B", "C_B_1_C_N", "C_BC_N_3", "C_NC_B_3"]
-defs = ["naphtalene", "C_N_2_V_N"]
-defs = ["pure", "C_N_2_V_N", "example"]
+defs = ["C_N_1_0!C_B_1_0!C_N_1_-60!C_B"]
 
 write = False
 plot_save = True

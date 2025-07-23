@@ -654,7 +654,8 @@ class generate_defect:
 
         if write == "FHI-aims":
             self._writeFHIaims(cwd, full_path, name)
-        self._plotStructure(plot_save, plot_show, name)
+        if plot_save == True or plot_show == True:
+            self._plotStructure(plot_save, plot_show, name)
 
         os.chdir(cwd)
 
@@ -685,14 +686,14 @@ Run Code
 """
 mat = "BN"
 ext = ".in"
-dims = [4]
+dims = [20]
 defs = ["pure", "C_B", "C_N", "V_B", "V_N", "C_2", "C_BV_N", "C_NO_N", "C_2C_B", "C_2C_N", "C_B(C_N)_3", "C_N(C_B)_3", "(C_4)_t", "(C_4)_c", "C_6"]
 # defs = ["pure", "C_B", "C_B_1_C_N", "C_BC_N_3", "C_NC_B_3"]
 defs = ["C_N_1_0!C_B_1_0!C_N_1_-60!C_B"]
 
-write = False
-plot_save = True
-plot_show = True
+write = "FHI-aims"
+plot_save = False
+plot_show = False
 path = "BN_auto"
 
 if plot_save == True or plot_show == True:
